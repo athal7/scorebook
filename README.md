@@ -29,6 +29,8 @@ Start there before writing any code.
 
 ## Status
 
-Design-only. No application code exists yet; this repo currently
-holds the design documentation that a future implementation session
-will build against.
+`game_state.py` — the pure domain state machine described in the
+architecture section of the design doc — is implemented and covered
+by a unit test suite (`pytest`). `store.py`, `display.py`, `input.py`,
+and `app.py` are still pending; the latter three are blocked on
+physical Kindle hardware per the design doc's open items.
