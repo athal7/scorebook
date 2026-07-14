@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# macOS
+.DS_Store
+
+# SQLite artifacts — exported per-game databases shouldn't be committed
+*.db
+*.db-wal
+*.db-shm
