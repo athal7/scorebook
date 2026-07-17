@@ -17,20 +17,42 @@ directly from it.
 
 ## Hardware — primary path: jailbroken Kindle Paperwhite
 
-Target a **used Kindle Paperwhite**, 1st gen (model `EY21`, 2012) or
-2nd gen (model `DP75SDI`, 2013). Prefer 2nd gen if the price is
-comparable:
+Target a **used Kindle Paperwhite or Kindle Touch**. The matrix below
+covers every device worth considering for this project, verified this
+session against kindlemodding.org, wiki.mobileread.com/wiki/Kindle_Serial_Numbers,
+and the FBInk README (github.com/NiLuJe/FBInk):
 
-| | PW1 (`EY21`) | PW2 (`DP75SDI`) |
-|---|---|---|
-| SoC | i.MX508 @ 800MHz | i.MX6 SoloLite @ 1GHz |
-| Screen | 758×1024, 6" E Ink Pearl/Carta | same |
-| Jailbreak ceiling | firmware 5.4.4.2 (hard ceiling) | 5.4.4.2 safely; 5.4.5–5.6.x "with caveats" |
+| | PW1 | PW2 | PW3 | Kindle Touch (4th gen) | PW4 | PW5 |
+|---|---|---|---|---|---|---|
+| Product/year | Paperwhite (2012) | Paperwhite 2 (2013) | Paperwhite 3 (2015) | Kindle Touch (2011/2012) | Paperwhite 4 (2018) | Paperwhite 5 (2021) |
+| Model code | `EY21` | `DP75SDI` | `DP75SDI` + serial prefix `G090*` | `D01200` (WiFi-only) | `PQ94WIF` | `M2L3EK` (`M2L4EK` Signature Edition) |
+| SoC | i.MX508 @ 800MHz | i.MX6 SoloLite @ 1GHz | i.MX6 SoloLite (same family as PW2) | K5-era | i.MX6SLL | MediaTek MT8110 (first non-NXP Paperwhite) |
+| Screen | 758×1024 212ppi Pearl | 758×1024 212ppi Pearl | 1072×1448 300ppi Carta | 600×800 167ppi Pearl | 300ppi Carta, IPX8 waterproof | 300ppi 6.8", waterproof |
+| Touch type | Capacitive | Capacitive | Capacitive | IR-grid (not capacitive) | Capacitive | Capacitive |
+| Jailbreak (current method) | WinterBreak/Mesquito | WinterBreak/Mesquito | WinterBreak/Mesquito | Legacy NiLuJe K5 Jailbreak/Kubrick | SpringBreak/Sanctuary/WinterBreak | SpringBreak/Nosebleed/Sanctuary/AdBreak |
+| Firmware ceiling | 5.4.4.2 (hard) | ~5.6.x with caveats | 5.16.2.1.1 (fully covered) | 5.3.7.3 | 5.18.1.1.1 (terminal, fully covered) | 5.19.2 (terminal, fully covered) |
+| FBInk support | Yes | Yes | Yes | Yes | Yes | Yes (dedicated MediaTek EPDC backend) |
+| Used price (~budget) | $30–55 | $30–55 | $30–55 | Cheap | $35–55 | $60–90 (likely over budget) |
+| Notable risk | Hard firmware ceiling — must hunt for an old-firmware unit | Model code collides with PW3 — check serial prefix | Same model-code collision as PW2; higher-res screen means rendering code must be resolution-aware if mixing hardware | Single-touch only, reported vulnerable to bright ambient light — bench-test before committing; has a physical Home button as a non-touch fallback | None significant — avoid cellular SKUs | Cost; no functional upside for this use case |
 
-PW2 is noticeably snappier for custom e-ink drawing and has a wider
-jailbreak-firmware compatibility window. Used market prices cluster
-$30–55 (checked live via eBay-adjacent listings, mid-2026), which fits
-the budget on its own.
+### Recommendation
+
+**PW3 or PW4 are the sweet spot**: mature jailbreaks that cover their
+*entire* firmware range (unlike PW1's hard 5.4.4.2 ceiling, which
+requires hunting for an old-firmware used unit), capacitive touch
+matching this doc's UI design, and comfortably within the ~$50 budget.
+PW4 additionally offers IPX8 waterproofing, useful for an outdoor
+field device. PW1/PW2 remain valid cheaper fallbacks with the caveats
+noted in the matrix above — in particular, PW2's model code
+(`DP75SDI`) is reused by PW3, so distinguishing them requires checking
+the serial-number prefix, not just the model code (PW2 prefixes like
+`B0D4`/`905A` vs PW3's `G090*`, per
+wiki.mobileread.com/wiki/Kindle_Serial_Numbers). The Kindle Touch is a
+viable budget alternative, but its IR-grid touchscreen is a
+meaningful UI-design risk (single-touch only, untested sunlight
+sensitivity) that should be bench-tested before committing. PW5
+offers no meaningful advantage for this project and typically exceeds
+the budget — not recommended unless found unusually cheap.
 
 ### Buying checklist
 
@@ -38,6 +60,12 @@ the budget on its own.
   PW1; "Amazon" on the back + a light-gray "Kindle" logo on the front
   = PW2. Don't trust Amazon's "Nth generation" marketing labels — they
   conflate all Kindle models, not just Paperwhites.
+- The model number printed on the back is **not sufficient on its
+  own** to distinguish PW2 from PW3 — both use model code `DP75SDI`.
+  Check the serial-number prefix (via
+  wiki.mobileread.com/wiki/Kindle_Serial_Numbers, e.g. PW2's prefixes
+  vs PW3's `G090*` prefix) to know which generation is actually in
+  hand.
 - Ask the seller **not** to connect the unit to WiFi before shipping.
   Risk: an autonomous OTA update could push firmware past the
   jailbreak ceiling.
@@ -50,10 +78,17 @@ the budget on its own.
 
 ### Jailbreak
 
-Use MobileRead's **"K5 JailBreak"** method — mature, long-running,
-still patched through 2025 for newer firmware via "KindleBreak" plus
-hotfixes. **KUAL** (Kindle Unified Application Launcher) is the
-on-device app launcher used to run custom apps.
+The current authority for Kindle jailbreaking is **kindlemodding.org**,
+the actively-maintained successor to the old MobileRead K5/KindleBreak
+threads, which are now explicitly archived/labeled "Legacy" there. The
+specific jailbreak tool depends on the exact model/firmware — see the
+compatibility matrix above for per-model current tools
+(WinterBreak/Mesquito for PW1–4; SpringBreak/Sanctuary/Nosebleed/AdBreak
+for PW4/PW5; the Legacy NiLuJe K5 Jailbreak for the Kindle Touch
+specifically, which is the one case where the original MobileRead-era
+method is still current and correct). **KUAL** (Kindle Unified
+Application Launcher) remains the on-device app launcher used to run
+custom apps across all of these, unchanged.
 
 ### Dev environment
 
